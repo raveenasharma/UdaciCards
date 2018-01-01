@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {View, Text, FlatList, StyleSheet} from 'react-native'
 import {connect} from 'react-redux'
-import DeckPreview from '../components/DeckPreview'
+import DeckView from '../components/DeckView'
 import {color} from '../style/colors'
 
 class DeckList extends React.Component {
@@ -16,12 +16,13 @@ class DeckList extends React.Component {
     return (
       <View style={styles.container}>
         {!decks || decks.length === 0 && (
-          <Text>No quiz decks !</Text>
+          <Text style ={{textAlign: 'center', color: 'white', fontSize: 22}} >No quiz decks ☹️ {'\n'}
+          Add a new deck or load sample decks from the Settings Tab </Text>
         )}
         <FlatList
           data={decks}
           renderItem={({item}) => (
-            <DeckPreview
+            <DeckView
               deck={item}
               gotToDeck={() => navigate('Deck', {title: item.title})}
             />

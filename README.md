@@ -1,7 +1,5 @@
 # UdaciCards: Mobile Flashcards
-## Udacity React Nanodegree Project 3
-
-![Prettier&Standard][Prettier&Standard]
+## Udacity React Nanodegree Project 
 
 # Project Title
 

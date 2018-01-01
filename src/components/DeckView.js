@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Text, View, TouchableHighlight, StyleSheet} from 'react-native'
+import {Text, View, TouchableOpacity, StyleSheet} from 'react-native'
 import {FontAwesome} from '@expo/vector-icons'
 import {color} from '../style/colors'
 
-class DeckPreview extends React.Component {
+class DeckView extends React.Component {
   static propTypes = {
     deck: PropTypes.object.isRequired,
     gotToDeck: PropTypes.func.isRequired
@@ -14,7 +14,7 @@ class DeckPreview extends React.Component {
     const {deck, gotToDeck} = this.props
     const {title, questions} = deck
     return (
-      <TouchableHighlight onPress={gotToDeck} style={styles.touchableHighlight}>
+      <TouchableOpacity onPress={gotToDeck} style={styles.preview}>
         <View style={styles.container}>
           <View>
             <Text style={styles.title}>{title}</Text>
@@ -24,17 +24,25 @@ class DeckPreview extends React.Component {
           </View>
           <FontAwesome name={'angle-right'} style={styles.icon} />
         </View>
-      </TouchableHighlight>
+      </TouchableOpacity>
     )
   }
 }
 
-export default DeckPreview
+export default DeckView
 
 const styles = StyleSheet.create({
-  touchableHighlight: {
+  preview: {
     marginBottom: 15,
-    borderRadius: 5
+    borderRadius: 5,
+    shadowRadius: 3,
+    shadowOpacity: 0.7,
+    shadowColor: 'rgba(0, 0, 0, 0.24)',
+    shadowOffset: {
+      width: 5,
+      height: 5
+    },
+    elevation: 3
   },
   container: {
     flexDirection: 'row',
@@ -44,15 +52,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 5,
     backgroundColor: color.darkGrey,
-    opacity: 0.7
+    opacity: 0.9
   },
   title: {
     fontSize: 30,
-    color: color.grey,
+    color: color.white,
     marginBottom: 5
   },
   cardCount: {
-    color: color.grey
+    color: color.orange
   },
   icon: {
     color: color.orange,

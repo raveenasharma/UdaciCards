@@ -1,5 +1,5 @@
 const addCardToDeck = (state, action) => {
-  const {card, deckName} = action.payload
+  const {card, deckName} = action.data
   const updatedDeck = {...state[deckName]}
   updatedDeck.questions = [...state[deckName].questions]
   updatedDeck.questions.push(card)

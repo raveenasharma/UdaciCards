@@ -1,8 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Text, View, TouchableHighlight, StyleSheet} from 'react-native'
+import {Text, View, TouchableOpacity, StyleSheet} from 'react-native'
 import {FontAwesome} from '@expo/vector-icons'
-import glamorous from 'glamorous-native'
 import {color} from '../style/colors'
 
 export class PrimaryButton extends React.Component {
@@ -10,7 +9,7 @@ export class PrimaryButton extends React.Component {
   render () {
     const {icon, title, onPress, ...props} = this.props
     return (
-      <ButtonEl onPress={onPress} {...props}>
+      <TouchableOpacity onPress={onPress} {...props}>
         <View style={[styles.button, styles.buttonPrimary]}>
           {icon != null && (
             <FontAwesome
@@ -21,7 +20,7 @@ export class PrimaryButton extends React.Component {
           )}
           <Text style={styles.buttonPrimaryText}>{title}</Text>
         </View>
-      </ButtonEl>
+      </TouchableOpacity>
     )
   }
 }
@@ -31,7 +30,7 @@ export class SecondaryButton extends React.Component {
   render () {
     const {icon, title, onPress, ...props} = this.props
     return (
-      <ButtonEl onPress={onPress} {...props}>
+      <TouchableOpacity onPress={onPress} {...props}>
         <View style={[styles.button, styles.buttonSecondary]}>
           {icon != null && (
             <FontAwesome
@@ -42,28 +41,7 @@ export class SecondaryButton extends React.Component {
           )}
           <Text style={styles.buttonSecondaryText}>{title}</Text>
         </View>
-      </ButtonEl>
-    )
-  }
-}
-
-export class SimpleButton extends React.Component {
-  static propTypes = buttonPropTypes
-  render () {
-    const {icon, title, onPress, ...props} = this.props
-    return (
-      <ButtonEl onPress={onPress} style={{alignSelf: 'flex-start'}} {...props}>
-        <View style={[styles.button, styles.buttonSimple]}>
-          {icon != null && (
-            <FontAwesome
-              name={icon}
-              size={16}
-              style={styles.buttonSimpleIcon}
-            />
-          )}
-          <Text style={styles.buttonSimpleText}>{title}</Text>
-        </View>
-      </ButtonEl>
+      </TouchableOpacity>
     )
   }
 }
@@ -74,16 +52,6 @@ const buttonPropTypes = {
   icon: PropTypes.string
 }
 
-const buttonElStyles = {alignSelf: 'center'}
-const buttonElDisabledStyles = {opacity: 0.4}
-const buttonElStackStyles = {alignSelf: 'stretch', marginBottom: 20}
-
-const ButtonEl = glamorous(TouchableHighlight)(
-  buttonElStyles,
-  ({disabled}) => disabled && buttonElDisabledStyles,
-  ({stackButton}) => stackButton && buttonElStackStyles
-)
-
 const styles = StyleSheet.create({
   button: {
     flexDirection: 'row',
@@ -91,7 +59,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 5,
     paddingVertical: 10,
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
+    marginBottom: 20
   },
   buttonPrimary: {
     backgroundColor: color.orange
@@ -107,21 +76,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent'
   },
   buttonSecondaryIcon: {
+    marginTop: 10,
     marginRight: 10,
     color: color.orange
   },
   buttonSecondaryText: {
-    color: color.darkGrey
-  },
-  buttonSimple: {
-    backgroundColor: 'transparent',
-    paddingHorizontal: 0
-  },
-  buttonSimpleIcon: {
-    marginRight: 5,
-    color: color.orange
-  },
-  buttonSimpleText: {
-    color: color.orange
+    color: color.white
   }
+  
 })

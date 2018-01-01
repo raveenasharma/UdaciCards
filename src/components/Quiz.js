@@ -1,15 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Text, View, StyleSheet, Animated} from 'react-native'
+import {Text, View, StyleSheet, Animated, ScrollView} from 'react-native'
 import {connect} from 'react-redux'
 import {color} from '../style/colors'
-import {updateLocalNotificationWithNewQuiz} from '../lib/notifications'
+import {updateNotificationTimestamp} from '../app-notification/notifications'
 import {PrimaryButton, SecondaryButton} from '../components/Buttons'
 
 const defaultState = {
   currentCardIndex: 0,
-  side: 'front',
-  complete: false,
+  face: 'front',
+  isQuizComplete: false,
   correctAnswers: 0
 }
 
@@ -20,6 +20,7 @@ class Quiz extends React.Component {
 
   state = {...defaultState}
 
+  // Animation functions
   componentWillMount () {
     this.animatedValue = new Animated.Value(0)
     this.springValue = new Animated.Value(0.3)
@@ -44,14 +45,14 @@ class Quiz extends React.Component {
         friction: 8,
         tension: 100,
         duration: 0
-      }).start();
+      }).start()
     } else {
       Animated.spring(this.animatedValue, {
         toValue: 180,
         friction: 8,
         tension: 100,
         duration: 0
-      }).start();
+      }).start()
     }
   }
 
@@ -61,17 +62,18 @@ class Quiz extends React.Component {
         toValue: 0,
         friction: 8,
         tension: 10
-      }).start();
+      }).start()
     } else {
       Animated.spring(this.animatedValue, {
         toValue: 180,
         friction: 8,
         tension: 10
-      }).start();
+      }).start()
     }
 
   }
 
+  // Animation for congratulatory text
   spring () {
     this.springValue.setValue(0.3)
     Animated.spring(
@@ -83,14 +85,16 @@ class Quiz extends React.Component {
     ).start()
   }
 
+  // END of Animation functions
+
   showAnswer = () => {
     this.flipCard()
-    this.setState({side: 'back'})
+    this.setState({face: 'back'})
   }
 
   showQuestion = () => {
     this.flipCard()
-    this.setState({side: 'front'})
+    this.setState({face: 'front'})
   }
 
   markCorrect = () => {
@@ -106,11 +110,11 @@ class Quiz extends React.Component {
     
     if (nextCardIndex < questions.length) {
       this.initialize()
-      this.setState({currentCardIndex: nextCardIndex, side: 'front'})
+      this.setState({currentCardIndex: nextCardIndex, face: 'front'})
       
     } else {
-      this.setState({complete: true}, () =>
-        updateLocalNotificationWithNewQuiz()        
+      this.setState({isQuizComplete: true}, () =>
+        updateNotificationTimestamp()        
       )
       this.spring()
     }
@@ -137,75 +141,70 @@ class Quiz extends React.Component {
         { rotateY: this.backInterpolate }
       ]
     }
-    const {currentCardIndex, side, complete, correctAnswers} = this.state
+    const {currentCardIndex, face, isQuizComplete, correctAnswers} = this.state
     const {questions} = this.props
     const {question, answer} = questions[currentCardIndex]
 
     return (
       <View style={styles.container}>
-        {complete === false && (
+        {isQuizComplete === false && (
           <View style={styles.questionsRemaining}>
             <Text style={styles.questionsRemainingText}>
               {currentCardIndex + 1}/{questions.length}
             </Text>
           </View>
         )}
-        {(() => {
-          if (complete) {
-            return (
-              <View style={styles.section}>
-                <View>
-                  <View style={styles.titleContainer}>
-                    <Text style={styles.title}>Quiz Complete</Text>
-                  </View>
-                  <Text style={styles.message}>
+        { isQuizComplete && (
+          <View style={styles.section}>
+            <View>
+              <View style={styles.titleContainer}>
+                <Text style={styles.title}>Quiz Complete</Text>
+              </View>
+              <Text style={styles.subtitle}>
                     You got {correctAnswers} out of {questions.length} questions
                     correct
-                  </Text>
-                  {correctAnswers === questions.length ? 
-                    (<Animated.Text style={[styles.successText, {transform: [{scale: this.springValue}]}]}>
+              </Text>
+              {correctAnswers === questions.length ? 
+                (<Animated.Text style={[styles.successText, {transform: [{scale: this.springValue}]}]}>
                       Congratulations!</Animated.Text>) : <Text></Text>}
-                </View>
-                <View style={styles.buttonContainer}>
-                  <SecondaryButton onPress={this.restart} title='Start Over' />
-                  <PrimaryButton onPress={this.goToDeck} title='Go to Deck' />
-                </View>
+            </View>
+            <View style={styles.buttonContainer}>
+              <SecondaryButton onPress={this.restart} title='Start Over' />
+              <PrimaryButton onPress={this.goToDeck} title='Go to Deck' />
+            </View>
+          </View>
+        ) }
+        { !isQuizComplete && face === 'front' && (
+          <Animated.View style={[styles.section, frontAnimatedStyle]}>
+            <View>
+              <View style={styles.titleContainer}>
+                <Text style={styles.title}>Question</Text>
               </View>
-            )
-          } else if (side === 'front') {
-            return (
-              <Animated.View style={[styles.section, frontAnimatedStyle]}>
-                <View>
-                  <View style={styles.titleContainer}>
-                    <Text style={styles.title}>Question</Text>
-                  </View>
-                  <View style={styles.messageContainer}>
-                    <Text style={styles.message}>{question}</Text>
-                  </View>
-                </View>
-                <PrimaryButton onPress={this.showAnswer} title='Show Answer' />
-              </Animated.View>
-            )
-          } else if (side === 'back') {
-            return (
-              <Animated.View style={[styles.section, backAnimatedStyle]}>
-                <View>
-                  <View style={styles.titleContainer}>
-                    <Text style={styles.title}>Answer</Text>
-                  </View>
-                  <View style={styles.messageContainer}>
-                    <Text style={styles.message}>{answer}</Text>
-                  </View>
-                  <SecondaryButton onPress={this.showQuestion} title='Show Question' />
-                </View>
-                <View style={styles.buttonContainer}>
-                  <SecondaryButton onPress={this.next} title='Incorrect' />
-                  <PrimaryButton onPress={this.markCorrect} title='Correct' />
-                </View>
-              </Animated.View>
-            )
-          }
-        })()}
+              <View style={styles.subtitleContainer}>
+                <Text style={styles.subtitle}>{question}</Text>
+              </View>
+            </View>
+            <PrimaryButton onPress={this.showAnswer} title='Show Answer' />
+          </Animated.View>
+        ) }
+        { !isQuizComplete && face === 'back' && (
+          <Animated.View style={[styles.section, backAnimatedStyle]}>
+            <View>
+              <View style={styles.titleContainer}>
+                <Text style={styles.title}>Answer</Text>
+              </View>
+              <ScrollView style={[styles.subtitleContainer, {height: 100, padding: 5}]}>
+                <Text style={styles.subtitle}>{answer}</Text>
+              </ScrollView>
+              <SecondaryButton onPress={this.showQuestion} title='Show Question' />
+            </View>
+            <View style={styles.buttonContainer}>
+              <SecondaryButton onPress={this.next} title='Incorrect' />
+              <PrimaryButton onPress={this.markCorrect} title='Correct' />
+            </View>
+          </Animated.View>
+        )
+        }
       </View>
     )
   }
@@ -260,12 +259,12 @@ const styles = StyleSheet.create({
     color: color.orange,
     textAlign: 'center'
   },
-  messageContainer: {
+  subtitleContainer: {
     marginBottom: 20
   },
-  message: {
+  subtitle: {
     fontSize: 18,
-    color: color.grey,
+    color: color.darkGrey,
     textAlign: 'center'
   },
   buttonContainer: {
@@ -277,6 +276,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '300',
     color: 'green',
-    textAlign: 'center'
+    textAlign: 'center',
+    backgroundColor: 'transparent'
   }
 })

@@ -3,17 +3,17 @@ import {Notifications, Permissions} from 'expo'
 import isAfter from 'date-fns/is_after'
 import isSameDay from 'date-fns/is_same_day'
 
-const LAST_QUIZ_COMPLETED_DATE = 'LAST_QUIZ_COMPLETED_DATE'
+const QUIZ_COMPLETED_TIME = 'QUIZ_COMPLETED_TIME'
 const NOTIFICATIONS_ENABLED = 'NOTIFICATIONS_ENABLED'
 
-export function setLocalNotification () {
+export function setNotificationTimestamp () {
   Permissions.askAsync(Permissions.NOTIFICATIONS).then(({status}) => {
     Notifications.cancelAllScheduledNotificationsAsync()
     if (status === 'granted') {
-      AsyncStorage.getItem(LAST_QUIZ_COMPLETED_DATE)
+      AsyncStorage.getItem(QUIZ_COMPLETED_TIME)
         .then(JSON.parse)
         .then(lastQuizCompleteDate => {
-          getNotificationEnabled().then(enabled => {
+          isNotificationEnabled().then(enabled => {
             if (enabled) {
               Notifications.scheduleLocalNotificationAsync(
                 localNotification(),
@@ -26,23 +26,23 @@ export function setLocalNotification () {
   })
 }
 
-export function updateLocalNotificationWithNewQuiz () {
-  AsyncStorage.setItem(
-    LAST_QUIZ_COMPLETED_DATE,
-    JSON.stringify(new Date()),
-    () => setLocalNotification()
-  )
-}
-
-export function getNotificationEnabled () {
+export function isNotificationEnabled () {
   return AsyncStorage.getItem(NOTIFICATIONS_ENABLED).then(JSON.parse)
 }
 
-export function setNotificationEnabled (value) {
+export function enableNotifications (value) {
   return AsyncStorage.setItem(
     NOTIFICATIONS_ENABLED,
     JSON.stringify(value),
-    () => setLocalNotification()
+    () => setNotificationTimestamp()
+  )
+}
+
+export function updateNotificationTimestamp () {
+  AsyncStorage.setItem(
+    QUIZ_COMPLETED_TIME,
+    JSON.stringify(new Date()),
+    () => setNotificationTimestamp()
   )
 }
 

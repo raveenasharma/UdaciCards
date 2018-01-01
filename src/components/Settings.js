@@ -3,14 +3,10 @@ import PropTypes from 'prop-types'
 import {StyleSheet, Switch, View, Text} from 'react-native'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 import {connect} from 'react-redux'
-import deleteAllDecks from '../state/actions/decks/action.deleteAllDecks'
-import restoreDefaultDecks from '../state/actions/decks/action.restoreDefaultDecks'
+import loadSampleDecks from '../redux/actions/loadSampleDecks'
 import {PrimaryButton} from '../components/Buttons'
 import {color} from '../style/colors'
-import {
-  getNotificationEnabled,
-  setNotificationEnabled
-} from '../lib/notifications'
+import { isNotificationEnabled, enableNotifications } from '../app-notification/notifications'
 
 class NewCard extends React.Component {
   static propTypes = {
@@ -20,25 +16,20 @@ class NewCard extends React.Component {
   state = {notifications: true}
 
   componentDidMount () {
-    getNotificationEnabled().then(enabled => {
+    isNotificationEnabled().then(enabled => {
       this.setState({notifications: enabled})
     })
   }
 
-  deleteAllDecks = () => {
-    this.props.deleteAllDecks()
-    this.props.navigation.navigate('DeckList')
-  }
-
-  restoreDefaultDecks = () => {
-    this.props.restoreDefaultDecks()
+  loadSampleDecks = () => {
+    this.props.loadSampleDecks()
     this.props.navigation.navigate('DeckList')
   }
 
   handleNotifications = checked => {
     this.setState(
       state => ({notifications: checked}),
-      () => setNotificationEnabled(checked)
+      () => enableNotifications(checked)
     )
   }
 
@@ -49,18 +40,14 @@ class NewCard extends React.Component {
         contentContainerStyle={styles.container}
         resetScrollToCoords={{x: 0, y: 0}}
       >
+        
         <PrimaryButton
-          onPress={this.deleteAllDecks}
-          title='Delete All Decks'
-          stackButton
-        />
-        <PrimaryButton
-          onPress={this.restoreDefaultDecks}
+          onPress={this.loadSampleDecks}
           title='Load Sample Decks'
           stackButton
         />
         <View style={styles.switchContainer}>
-          <Text style={{color: color.grey}}>Notifications</Text>
+          <Text style={{color: color.lightGrey}}>Notifications</Text>
           <Switch
             value={this.state.notifications}
             onValueChange={checked => this.handleNotifications(checked)}
@@ -71,7 +58,7 @@ class NewCard extends React.Component {
   }
 }
 
-export default connect(null, {deleteAllDecks, restoreDefaultDecks})(
+export default connect(null, {loadSampleDecks})(
   NewCard
 )
 

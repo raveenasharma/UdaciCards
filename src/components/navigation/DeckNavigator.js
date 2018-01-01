@@ -1,9 +1,10 @@
 import {StackNavigator} from 'react-navigation'
-import {color} from '../../style/colors'
 import DeckList from '../DeckList'
 import Deck from '../Deck'
 import AddCard from '../AddCard'
 import Quiz from '../Quiz'
+
+import {color} from '../../style/colors'
 
 const DeckStackNavigator = StackNavigator(
   {
@@ -26,8 +27,7 @@ const DeckStackNavigator = StackNavigator(
       path: 'decks/:title/new',
       navigationOptions: () => ({
         title: `Add Card`
-      }),
-      mode: 'modal'
+      })
     },
     Quiz: {
       screen: Quiz,

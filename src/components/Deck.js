@@ -6,7 +6,7 @@ import {
   PrimaryButton,
   SecondaryButton
 } from '../components/Buttons'
-import deleteDeck from '../state/actions/decks/action.deleteAllDecks'
+import deleteDeck from '../redux/actions/deleteDeck'
 import {color} from '../style/colors'
 
 class Deck extends React.Component {
@@ -29,10 +29,6 @@ class Deck extends React.Component {
 
   componentDidMount () {
     this.props.navigation.setParams({deleteDeck: this.deleteDeck})
-  }
-
-  renameDeck = () => {
-    this.props.navigation.navigate('RenameDeck', {title: this.props.deck.title})
   }
 
   deleteDeck = () => {
@@ -108,14 +104,15 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 32,
-    color: color.grey
+    fontWeight: '600',
+    color: color.lightGrey
   },
   cardCountView: {
     marginBottom: 15
   },
   cardCountText: {
     fontSize: 18,
-    color: color.grey
+    color: color.lightGrey
   },
   cardCountNumber: {
     fontSize: 20,

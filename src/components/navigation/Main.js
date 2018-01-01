@@ -1,9 +1,10 @@
 import React from 'react'
 import {TabNavigator} from 'react-navigation'
 import {Ionicons} from '@expo/vector-icons'
-import DeckStackNavigator from './Deck'
+import DeckStackNavigator from './DeckNavigator'
 import AddDeck from '../AddDeck'
 import Settings from '../Settings'
+
 import {color} from '../../style/colors'
 
 const IndexSection = TabNavigator(
@@ -46,7 +47,7 @@ const IndexSection = TabNavigator(
     tabBarOptions: {
       activeTintColor: color.orange,
       style: {
-        height: 56,
+        height: 50,
         backgroundColor: color.darkBlue,
         shadowColor: 'rgba(0, 0, 0, 0.24)',
         shadowOffset: {width: 0, height: 3},

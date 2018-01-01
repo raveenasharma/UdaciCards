@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {View, Text, TextInput, StyleSheet, Keyboard} from 'react-native'
+import {View, Text, TextInput, StyleSheet, Keyboard, Platform} from 'react-native'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 import {connect} from 'react-redux'
-import createNewDeck from '../state/actions/decks/action.createNewDeck'
 import {PrimaryButton} from '../components/Buttons'
+import createNewDeck from '../redux/actions/createDeck'
 import {color} from '../style/colors'
 
 class AddDeck extends React.Component {
@@ -14,9 +14,9 @@ class AddDeck extends React.Component {
 
   state = {name: ''}
 
-  onSubmit = () => {
-    Keyboard.dismiss()
+  addCard = () => {
     const {name} = this.state
+    Keyboard.dismiss()
     this.setState({name: ''}, () => {
       this.props.createNewDeck({name: name})
       this.props.navigation.navigate('Deck', {title: name})
@@ -25,26 +25,27 @@ class AddDeck extends React.Component {
 
   render () {
     const empty = this.state.name === ''
-    const duplicateName = this.props.deckIds.includes(this.state.name)
-    const disabled = empty || duplicateName
+    const duplicateTitle = this.props.deckIds.includes(this.state.name)
+    const disabled = empty || duplicateTitle
 
     return (
       <KeyboardAwareScrollView
-        style={{backgroundColor: color.blue}}
+        style={{ backgroundColor: '#4c69a5' }}
+        resetScrollToCoords={{ x: 0, y: 0 }}
         contentContainerStyle={styles.container}
-        resetScrollToCoords={{x: 0, y: 0}}
+        scrollEnabled={false}
       >
-        <View style={styles.inputContainer}>
+        <View style={styles.container}>
           <Text style={styles.label}>Provide a name for you new deck!</Text>
           <TextInput
-            style={styles.input}
+            style={styles.textInput}
             onChangeText={name => this.setState({name})}
             value={this.state.name}
             keyboardAppearance='dark'
             returnKeyType='done'
           />
         </View>
-        {duplicateName && (
+        {duplicateTitle && (
           <View style={styles.errorContainer}>
             <Text style={styles.errorText}>
               Deck with this name already exists. Please choose another name!
@@ -52,7 +53,7 @@ class AddDeck extends React.Component {
           </View>
         )}
         <PrimaryButton
-          onPress={this.onSubmit}
+          onPress={this.addCard}
           title='Create Deck'
           disabled={disabled}
         />
@@ -78,15 +79,15 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 24,
     paddingBottom: 10,
-    color: color.grey
+    color: color.lightGrey
   },
-  input: {
+  textInput: {
     fontSize: 20,
-    borderRadius: 5,
-    paddingVertical: 7.5,
+    paddingVertical: 7,
     paddingHorizontal: 15,
-    backgroundColor: color.darkGrey,
-    color: color.grey
+    color: color.darkGrey,
+    borderBottomWidth: Platform.OS === 'ios' ? 2 : 0,
+    borderBottomColor: Platform.OS === 'ios' ? color.lightGrey : 'transparent'
   },
   errorContainer: {
     paddingVertical: 7.5,

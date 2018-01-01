@@ -1,4 +1,4 @@
 import {combineReducers} from 'redux'
-import decks from './decks/index'
+import decks from './reducer-mapper'
 
 export default combineReducers({decks})

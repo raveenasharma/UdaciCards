@@ -1,10 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {View, Text, TextInput, StyleSheet, Keyboard} from 'react-native'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
-import {connect} from 'react-redux'
-import addCardToDeck from '../state/actions/decks/action.addCardToDeck'
+import {View, Text, TextInput, StyleSheet, Platform, Keyboard} from 'react-native'
 import {PrimaryButton} from '../components/Buttons'
+import {connect} from 'react-redux'
+import addCardToDeck from '../redux/actions/addCardToDeck'
+
 import {color} from '../style/colors'
 
 class AddCard extends React.Component {
@@ -14,34 +15,31 @@ class AddCard extends React.Component {
 
   state = {question: '', answer: ''}
 
-  onSubmit = () => {
+  addCard = () => {
     Keyboard.dismiss()
     const {question, answer} = this.state
     const deckName = this.props.navigation.state.params.title
-    this.setState({question: '', answer: ''}, () => {
-      this.props.addCardToDeck({deckName, card: {question, answer}})
-      this.props.navigation.goBack()
-    })
+
+    this.props.addCardToDeck({deckName, card: {question, answer}})
+    this.props.navigation.goBack()
   }
 
   render () {
-    const questionEmpty = this.state.question === ''
-    const answerEmpty = this.state.answer === ''
-    const disabled = questionEmpty || answerEmpty
+    const disabled = this.state.question === '' || this.state.answer === ''
 
     return (
       <KeyboardAwareScrollView
-        style={{backgroundColor: color.blue}}
+        style={{ backgroundColor: '#4c69a5' }}
+        resetScrollToCoords={{ x: 0, y: 0 }}
         contentContainerStyle={styles.container}
-        resetScrollToCoords={{x: 0, y: 0}}
+        scrollEnabled={false}
       >
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Question</Text>
           <TextInput
-            style={styles.input}
+            style={styles.textInput}
             onChangeText={question => this.setState({question})}
             value={this.state.question}
-            keyboardAppearance='dark'
             multiline
           />
         </View>
@@ -49,16 +47,15 @@ class AddCard extends React.Component {
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Answer</Text>
           <TextInput
-            style={styles.input}
+            style={styles.textInput}
             onChangeText={answer => this.setState({answer})}
             value={this.state.answer}
-            keyboardAppearance='dark'
             multiline
           />
         </View>
 
         <PrimaryButton
-          onPress={this.onSubmit}
+          onPress={this.addCard}
           title='Add Card'
           disabled={disabled}
         />
@@ -77,26 +74,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'stretch'
   },
-  header: {
-    fontSize: 28,
-    paddingBottom: 5,
-    color: color.darkBlue,
-    backgroundColor: 'transparent'
-  },
   inputContainer: {
     marginBottom: 20
   },
   label: {
     fontSize: 24,
     paddingBottom: 10,
-    color: color.grey
+    color: color.lightGrey
   },
-  input: {
+  textInput: {
     fontSize: 20,
-    borderRadius: 5,
-    paddingVertical: 7.5,
+    paddingVertical: 7,
     paddingHorizontal: 15,
-    backgroundColor: color.darkGrey,
-    color: color.grey
+    color: color.darkGrey,
+    borderBottomWidth: Platform.OS === 'ios' ? 2 : 0,
+    borderBottomColor: Platform.OS === 'ios' ? color.lightGrey : 'transparent'
   }
 })
