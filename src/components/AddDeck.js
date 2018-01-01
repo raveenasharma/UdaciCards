@@ -14,7 +14,7 @@ class AddDeck extends React.Component {
 
   state = {name: ''}
 
-  addCard = () => {
+  addDeck = () => {
     const {name} = this.state
     Keyboard.dismiss()
     this.setState({name: ''}, () => {
@@ -54,7 +54,7 @@ class AddDeck extends React.Component {
           </View>
         )}
         <PrimaryButton
-          onPress={this.addCard}
+          onPress={this.addDeck}
           title='Submit'
           disabled={disabled}
         />

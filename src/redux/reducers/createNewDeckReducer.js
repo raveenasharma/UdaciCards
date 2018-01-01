@@ -1,5 +1,5 @@
 const createNewDeck = (state, action) => {
-  const {name} = action.payload
+  const {name} = action.deck
   return {
     ...state,
     [name]: {
