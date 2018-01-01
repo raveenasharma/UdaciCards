@@ -25,6 +25,7 @@ class AddDeck extends React.Component {
 
   render () {
     const empty = this.state.name === ''
+    // Note: Ensure unique deck names as they act as the deck ID
     const duplicateTitle = this.props.deckIds.includes(this.state.name)
     const disabled = empty || duplicateTitle
 
@@ -36,7 +37,7 @@ class AddDeck extends React.Component {
         scrollEnabled={false}
       >
         <View style={styles.container}>
-          <Text style={styles.label}>Provide a name for you new deck!</Text>
+          <Text style={styles.label}>What is the title of your new deck?</Text>
           <TextInput
             style={styles.textInput}
             onChangeText={name => this.setState({name})}
@@ -54,7 +55,7 @@ class AddDeck extends React.Component {
         )}
         <PrimaryButton
           onPress={this.addCard}
-          title='Create Deck'
+          title='Submit'
           disabled={disabled}
         />
       </KeyboardAwareScrollView>

@@ -7,10 +7,10 @@ import {updateNotificationTimestamp} from '../app-notification/notifications'
 import {PrimaryButton, SecondaryButton} from '../components/Buttons'
 
 const defaultState = {
-  currentCardIndex: 0,
-  face: 'front',
+  selectedCardIndex: 0,  
   isQuizComplete: false,
-  correctAnswers: 0
+  correctAnswers: 0,
+  face: 'front'
 }
 
 class Quiz extends React.Component {
@@ -99,18 +99,18 @@ class Quiz extends React.Component {
 
   markCorrect = () => {
     this.setState(
-      state => ({correctAnswers: state.correctAnswers + 1}),
-      () => this.next()
+      state => ({correctAnswers: state.correctAnswers + 1})
     )
+    this.nextCard()
   }
 
-  next = () => {
+  nextCard = () => {
     const {questions} = this.props
-    const nextCardIndex = this.state.currentCardIndex + 1
+    const nextCardIndex = this.state.selectedCardIndex + 1
     
     if (nextCardIndex < questions.length) {
       this.initialize()
-      this.setState({currentCardIndex: nextCardIndex, face: 'front'})
+      this.setState({selectedCardIndex: nextCardIndex, face: 'front'})
       
     } else {
       this.setState({isQuizComplete: true}, () =>
@@ -141,16 +141,16 @@ class Quiz extends React.Component {
         { rotateY: this.backInterpolate }
       ]
     }
-    const {currentCardIndex, face, isQuizComplete, correctAnswers} = this.state
+    const {selectedCardIndex, isQuizComplete, correctAnswers, face} = this.state
     const {questions} = this.props
-    const {question, answer} = questions[currentCardIndex]
+    const {question, answer} = questions[selectedCardIndex]
 
     return (
       <View style={styles.container}>
         {isQuizComplete === false && (
-          <View style={styles.questionsRemaining}>
-            <Text style={styles.questionsRemainingText}>
-              {currentCardIndex + 1}/{questions.length}
+          <View style={styles.remainingQuestions}>
+            <Text style={styles.remainingQuestionsText}>
+              {selectedCardIndex + 1}/{questions.length}
             </Text>
           </View>
         )}
@@ -184,7 +184,7 @@ class Quiz extends React.Component {
                 <Text style={styles.subtitle}>{question}</Text>
               </View>
             </View>
-            <PrimaryButton onPress={this.showAnswer} title='Show Answer' />
+            <PrimaryButton onPress={this.showAnswer} title='Answer' />
           </Animated.View>
         ) }
         { !isQuizComplete && face === 'back' && (
@@ -196,10 +196,10 @@ class Quiz extends React.Component {
               <ScrollView style={[styles.subtitleContainer, {height: 100, padding: 5}]}>
                 <Text style={styles.subtitle}>{answer}</Text>
               </ScrollView>
-              <SecondaryButton onPress={this.showQuestion} title='Show Question' />
+              <SecondaryButton onPress={this.showQuestion} title='Question' />
             </View>
             <View style={styles.buttonContainer}>
-              <SecondaryButton onPress={this.next} title='Incorrect' />
+              <SecondaryButton onPress={this.nextCard} title='Incorrect' />
               <PrimaryButton onPress={this.markCorrect} title='Correct' />
             </View>
           </Animated.View>
@@ -224,12 +224,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  questionsRemaining: {
+  remainingQuestions: {
     position: 'absolute',
     top: 15,
     left: 15
   },
-  questionsRemainingText: {
+  remainingQuestionsText: {
     color: color.orange,
     fontWeight: 'bold',
     fontSize: 18

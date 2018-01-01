@@ -11,11 +11,9 @@
     "test": "node node_modules/jest/bin/jest.js --watch"
   },
   "dependencies": {
-    "array-shuffle": "1.0.1",
     "date-fns": "1.29.0",
     "deep-freeze": "0.0.1",
     "expo": "21.0.0",
-    "glamorous-native": "1.2.0",
     "react": "16.0.0",
     "react-native": "0.48.4",
     "react-native-keyboard-aware-scroll-view": "0.3.0",

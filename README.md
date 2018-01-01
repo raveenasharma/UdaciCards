@@ -16,8 +16,8 @@ You’ll need to have Node >= 6 on your machine. You can use npm to easily switc
 ### Installing
 
 1. clone the project - `git clone https://github.com/raveenasharma/UdaciCards.git`
-2. install its dependencies - `yarn install`
-3. start the server - `yarn start`
+2. install its dependencies - `npm install`
+3. start the server - `npm start`
 4. Install expo App on your mobile device and scan the QR code or run the app on a local simulator. (Preferebaly using Expo and Genymotion simulator.)
 
 #### Supported platforms / devices?

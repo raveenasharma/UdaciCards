@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Text, View, TouchableOpacity, StyleSheet} from 'react-native'
-import {FontAwesome} from '@expo/vector-icons'
 import {color} from '../style/colors'
 
 class DeckView extends React.Component {
@@ -22,7 +21,6 @@ class DeckView extends React.Component {
               {questions.length} Card{questions.length === 1 ? '' : 's'}
             </Text>
           </View>
-          <FontAwesome name={'angle-right'} style={styles.icon} />
         </View>
       </TouchableOpacity>
     )
@@ -46,7 +44,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 7.5,
     paddingHorizontal: 15,
@@ -60,7 +58,8 @@ const styles = StyleSheet.create({
     marginBottom: 5
   },
   cardCount: {
-    color: color.orange
+    color: color.orange,
+    textAlign: 'center'
   },
   icon: {
     color: color.orange,

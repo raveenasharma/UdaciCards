@@ -26,11 +26,11 @@ class NewCard extends React.Component {
     this.props.navigation.navigate('DeckList')
   }
 
-  handleNotifications = checked => {
+  handleNotifications = enabled => {
     this.setState(
-      state => ({notifications: checked}),
-      () => enableNotifications(checked)
+      state => ({notifications: enabled})
     )
+    enableNotifications(enabled)
   }
 
   render () {
@@ -44,13 +44,13 @@ class NewCard extends React.Component {
         <PrimaryButton
           onPress={this.loadSampleDecks}
           title='Load Sample Decks'
-          stackButton
+          
         />
-        <View style={styles.switchContainer}>
-          <Text style={{color: color.lightGrey}}>Notifications</Text>
+        <View style={styles.notificationContainer}>
+          <Text style={{color: color.lightGrey}}>Allow Notifications</Text>
           <Switch
             value={this.state.notifications}
-            onValueChange={checked => this.handleNotifications(checked)}
+            onValueChange={enabled => this.handleNotifications(enabled)}
           />
         </View>
       </KeyboardAwareScrollView>
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'stretch'
   },
-  switchContainer: {
+  notificationContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
