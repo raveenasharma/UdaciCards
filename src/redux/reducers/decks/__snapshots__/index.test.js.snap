@@ -1,0 +1,133 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Deck reducer addCardToDeck 1`] = `
+Object {
+  "JavaScript": Object {
+    "questions": Array [
+      Object {
+        "answer": "The combination of a function and the lexical environment within which that function was declared.",
+        "question": "What is a closure?",
+      },
+    ],
+    "title": "JavaScript",
+  },
+  "React": Object {
+    "questions": Array [
+      Object {
+        "answer": "A library for managing user interfaces",
+        "question": "What is React?",
+      },
+      Object {
+        "answer": "The componentDidMount lifecycle event",
+        "question": "Where do you make Ajax requests in React?",
+      },
+      Object {
+        "answer": "answer",
+        "question": "question",
+      },
+    ],
+    "title": "React",
+  },
+}
+`;
+
+exports[`Deck reducer createNewDeck 1`] = `
+Object {
+  "JavaScript": Object {
+    "questions": Array [
+      Object {
+        "answer": "The combination of a function and the lexical environment within which that function was declared.",
+        "question": "What is a closure?",
+      },
+    ],
+    "title": "JavaScript",
+  },
+  "React": Object {
+    "questions": Array [
+      Object {
+        "answer": "A library for managing user interfaces",
+        "question": "What is React?",
+      },
+      Object {
+        "answer": "The componentDidMount lifecycle event",
+        "question": "Where do you make Ajax requests in React?",
+      },
+    ],
+    "title": "React",
+  },
+  "Test Deck": Object {
+    "questions": Array [],
+    "title": "Test Deck",
+  },
+}
+`;
+
+exports[`Deck reducer deleteAllDecks 1`] = `Object {}`;
+
+exports[`Deck reducer deleteDeck 1`] = `
+Object {
+  "JavaScript": Object {
+    "questions": Array [
+      Object {
+        "answer": "The combination of a function and the lexical environment within which that function was declared.",
+        "question": "What is a closure?",
+      },
+    ],
+    "title": "JavaScript",
+  },
+}
+`;
+
+exports[`Deck reducer renameDeck 1`] = `
+Object {
+  "JavaScript": Object {
+    "questions": Array [
+      Object {
+        "answer": "The combination of a function and the lexical environment within which that function was declared.",
+        "question": "What is a closure?",
+      },
+    ],
+    "title": "JavaScript",
+  },
+  "Test Deck": Object {
+    "questions": Array [
+      Object {
+        "answer": "A library for managing user interfaces",
+        "question": "What is React?",
+      },
+      Object {
+        "answer": "The componentDidMount lifecycle event",
+        "question": "Where do you make Ajax requests in React?",
+      },
+    ],
+    "title": "Test Deck",
+  },
+}
+`;
+
+exports[`Deck reducer restoreDefaultDecks 1`] = `
+Object {
+  "JavaScript": Object {
+    "questions": Array [
+      Object {
+        "answer": "The combination of a function and the lexical environment within which that function was declared.",
+        "question": "What is a closure?",
+      },
+    ],
+    "title": "JavaScript",
+  },
+  "React": Object {
+    "questions": Array [
+      Object {
+        "answer": "A library for managing user interfaces",
+        "question": "What is React?",
+      },
+      Object {
+        "answer": "The componentDidMount lifecycle event",
+        "question": "Where do you make Ajax requests in React?",
+      },
+    ],
+    "title": "React",
+  },
+}
+`;
